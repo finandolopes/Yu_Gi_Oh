@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Joken Po Yu-Gi-Oh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .card {
+            width: 200px;
+            height: 300px;
+            border: 5px solid white;
+            border-radius: 10px;
+            background-size: cover;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+        }
+
+        .card.pedra {
+            background-image: url("pedra.jpg");
+        }
+
+        .card.papel {
+            background-image: url("papel.jpg");
+        }
+
+        .card.tesoura {
+            background-image: url("tesoura.jpg");
+        }
+
+        .result {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .result p {
+            font-size: 24px;
+            margin: 10px;
+        }
+
+        .score {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .score p {
+            font-size: 18px;
+        }
+
+        .reset {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .reset button {
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: white;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .reset button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Joken Po Yu-Gi-Oh</h1>
+    <div class="container">
+        <div class="cards">
+            <div class="card pedra" onclick="play('pedra')"></div>
+            <div class="card papel" onclick="play('papel')"></div>
+            <div class="card tesoura" onclick="play('tesoura')"></div>
+        </div>
+        <div class="result">
+            <p id="player-choice">Você escolheu: </p>
+            <p id="computer-choice">O computador escolheu: </p>
+            <p id="winner">O vencedor é: </p>
+        </div>
+        <div class="score">
+            <p id="player-score">Sua pontuação: 0</p>
+            <p id="computer-score">Pontuação do computador: 0</p>
+        </div>
+        <div class="reset">
+            <button onclick="reset()">Reiniciar o jogo</button>
+        </div>
+    </div>
+    <script>
+        // Variáveis globais
+        var playerScore = 0;
+        var computerScore = 0;
+        var playerChoice = "";
+        var computerChoice = "";
+
+        // Função para gerar uma escolha aleatória para o computador
+        function computerRandomChoice() {
+            var choices = ["pedra", "papel", "tesoura"];
+            var index = Math.floor(Math.random() * 3);
+            return choices[index];
+        }
+
+        // Função para determinar o vencedor de cada rodada
+        function determineWinner(player, computer) {
+            if (player == computer) {
+                return "Empate";
+            } else if (player == "pedra" && computer == "tesoura") {
+                return "Você";
+            } else if (player == "papel" && computer == "pedra") {
+                return "Você";
+            } else if (player == "tesoura" && computer == "papel") {
+                return "Você";
+            } else {
+                return "Computador";
+            }
+        }
+
+        // Função para atualizar o placar e os elementos do HTML
+        function updateScore(winner) {
+            if (winner == "Você") {
+                playerScore++;
+            } else if (winner == "Computador") {
+                computerScore++;
+            }
+            document.getElementById("player-score").innerHTML = "Sua pontuação: " + playerScore;
+            document.getElementById("computer-score").innerHTML = "Pontuação do computador: " + computerScore;
+            document.getElementById("player-choice").innerHTML = "Você escolheu: " + playerChoice;
+            document.getElementById("computer-choice").innerHTML = "O computador escolheu: " + computerChoice;
+            document.getElementById("winner").innerHTML = "O vencedor é: " + winner;
+        }
+
+        // Função para reiniciar o jogo
+        function reset() {
+            playerScore = 0;
+            computerScore = 0;
+            playerChoice = "";
+            computerChoice = "";
+            document.getElementById("player-score").innerHTML = "Sua pontuação: 0";
+            document.getElementById("computer-score").innerHTML = "Pontuação do computador: 0";
+            document.getElementById("player-choice").innerHTML = "Você escolheu: ";
+            document.getElementById("computer-choice").innerHTML = "O computador escolheu: ";
+            document.getElementById("winner").innerHTML = "O vencedor é: ";
+        }
+
+        // Função para jogar uma rodada
+        function play(choice) {
+            playerChoice = choice;
+            computerChoice = computerRandomChoice();
+            var winner = determineWinner(playerChoice, computerChoice);
+            updateScore(winner);
+        }
+    </script>
+</body>
+</html> 
